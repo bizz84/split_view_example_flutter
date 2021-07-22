@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:split_view_example_flutter/first_page.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:split_view_example_flutter/app_menu.dart';
+import 'package:split_view_example_flutter/split_view.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+// 1. extend from ConsumerWidget
+class MyApp extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // 3. watch selectedPageBuilderProvider
+    final selectedPageBuilder = ref.watch(selectedPageBuilderProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
       // just return `FirstPage` for now. We'll change this later
-      home: FirstPage(),
+      home: SplitView(
+        menu: AppMenu(),
+        content: selectedPageBuilder(context),
+      ),
     );
   }
 }
