@@ -17,7 +17,7 @@ final selectedPageNameProvider = StateProvider<String>((ref) {
 
 final selectedPageBuilderProvider = Provider<WidgetBuilder>((ref) {
   // watch for state changes inside selectedPageNameProvider
-  final selectedPageKey = ref.watch(selectedPageNameProvider).state;
+  final selectedPageKey = ref.watch(selectedPageNameProvider.state).state;
   // return the WidgetBuilder using the key as index
   return _availablePages[selectedPageKey]!;
 });
@@ -25,8 +25,8 @@ final selectedPageBuilderProvider = Provider<WidgetBuilder>((ref) {
 // 1. extend from ConsumerWidget
 class AppMenu extends ConsumerWidget {
   void _selectPage(BuildContext context, WidgetRef ref, String pageName) {
-    if (ref.read(selectedPageNameProvider).state != pageName) {
-      ref.read(selectedPageNameProvider).state = pageName;
+    if (ref.read(selectedPageNameProvider.state).state != pageName) {
+      ref.read(selectedPageNameProvider.state).state = pageName;
       // dismiss the drawer of the ancestor Scaffold if we have one
       if (Scaffold.maybeOf(context)?.hasDrawer ?? false) {
         Navigator.of(context).pop();
@@ -37,7 +37,7 @@ class AppMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // 2. watch the provider's state
-    final selectedPageName = ref.watch(selectedPageNameProvider).state;
+    final selectedPageName = ref.watch(selectedPageNameProvider.state).state;
     return Scaffold(
       appBar: AppBar(title: Text('Menu')),
       body: ListView(
